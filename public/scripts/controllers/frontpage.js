@@ -4,15 +4,30 @@
     "$scope", "$http", function($scope, $http) {
       console.log("Frontpage controller loaded");
       $scope.videos;
-      return $http.get("/data/mainstream").success(function(data) {
-        console.log(data);
-        data.forEach(function(v) {
-          return v.publishedAt = new Date(v.publishedAt);
-        });
-        return $scope.videos = data;
-      }).error(function(data, status, headers, config) {
-        return console.log(data);
-      });
+      $scope.outOfData = false;
+      return $scope.loadMore = function() {
+        if ($scope.outOfData) {
+          return;
+        }
+        console.log("Loading More");
+        $scope.outOfData = true;
+        if ($scope.videos) {
+          return $http.get("/data/mainstream/" + $scope.videos.length).success(function(data) {
+            console.log(data);
+            $scope.videos = $scope.videos.concat(data);
+            $scope.outOfData = false;
+            return console.log($scope.videos.length);
+          }).error(function() {
+            return $scope.outOfData = true;
+          });
+        } else {
+          return $http.get("/data/mainstream/0").success(function(data) {
+            console.log(data);
+            $scope.videos = data;
+            return $scope.outOfData = false;
+          });
+        }
+      };
     }
   ]);
 

@@ -1,4 +1,4 @@
-ul.channel-list
+ul(infinite-scroll='loadMore()', infinite-scroll-distance="1", infinite-scroll-disabled="outOfData").channel-list
   li(ng-repeat="video in videos track by $index").channel-content-item.clearfix
     figure
       img(ng-src="{{video.image}}")

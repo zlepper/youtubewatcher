@@ -1,4 +1,4 @@
-angular.module("youtubewatcher", ["ui.router", "ngAnimate"]).config([
+angular.module("youtubewatcher", ["ui.router", "ngAnimate", "infinite-scroll"]).config([
   "$stateProvider", "$urlRouterProvider", "$locationProvider",  ($stateProvider, $urlRouterProvider, $locationProvider) ->
     $locationProvider.html5Mode(true)
     $urlRouterProvider.otherwise("frontpage")

@@ -10,13 +10,18 @@ var channelVideos = {};
 var cacheFile = path.resolve(__dirname, "..", "config", "videoscache.json");
 var channelCacheFile = path.resolve(__dirname, "..", "config", "channelcache.json");
 
-function getChannelContent(channelShortname, res, second) {
-    if(channelVideos[channelShortname]) {
-        res.send(JSON.stringify(channelVideos[channelShortname].slice(0,50)));
-    } else {
-        if(second) {
-            return;
+function getChannelContent(channelShortname, res, second, start) {
+    start = Number(start);
+    if (channelVideos[channelShortname]) {
+        if (channelVideos[channelShortname].length <= start) {
+            res.status(404).send("Not found");
+        } else {
+            var end = channelVideos[channelShortname].length > start + 15 ? start + 15 : channelVideos[channelShortname].length;
+            var a = channelVideos[channelShortname].slice(start, end);
+            res.send(JSON.stringify(a));
         }
+    } else {
+        if (second) return;
         fs.readFile(channelCacheFile, {encoding: "utf8"}, function (err, data) {
             channelVideos = JSON.parse(data);
             getChannelContent(channelShortname, res, true);
@@ -26,11 +31,23 @@ function getChannelContent(channelShortname, res, second) {
 
 exports.getChannelContent = getChannelContent;
 
-function getAllContent(res) {
-    if (videos) res.send(JSON.stringify(videos.slice(0, 50))); else
+function getAllContent(res, start, second) {
+    start = Number(start);
+    if (videos) {
+        if(videos.length <= start) {
+            res.status(404).send("Not found");
+        } else {
+            var end = videos.length > start + 50 ? start + 50 : videos.length;
+            var a = videos.slice(start, end);
+            res.send(JSON.stringify(a));
+        }
+    } else {
+        if(second) return;
         fs.readFile(cacheFile, {encoding: "utf8"}, function (err, data) {
-            res.send(data);
+            videos = JSON.parse(data);
+            getAllContent(res, start, true);
         })
+    }
 }
 
 exports.getAllContent = getAllContent;
@@ -51,23 +68,23 @@ function parseISO8601Duration(iso8601Duration) {
         seconds: matches[8] === undefined ? 0 : matches[8]
     };
     var t = "";
-    if(o.seconds) {
+    if (o.seconds) {
         t += o.seconds < 10 ? "0" + o.seconds : o.seconds;
     } else {
         t += "00";
     }
-    if(o.minutes) {
-        if(o.hours) {
+    if (o.minutes) {
+        if (o.hours) {
             t = (o.minutes < 10 ? "0" + o.minutes : o.minutes) + ":" + t;
         } else {
             t = o.minutes + ":" + t;
         }
     } else {
-        if(o.hours) {
+        if (o.hours) {
             t = "00:" + t;
         }
     }
-    if(o.hours) {
+    if (o.hours) {
         t = (o.hours < 10 ? "0" + o.hours : o.hours) + ":" + t;
     }
     return t;
@@ -82,13 +99,13 @@ function saveCache() {
 
     var channels = loader.readChannelFiles();
     channelVideos = {};
-    channels.forEach(function(c) {
-        if(!channelVideos[c.shortname]) {
+    channels.forEach(function (c) {
+        if (!channelVideos[c.shortname]) {
             channelVideos[c.shortname] = [];
         }
         var a = channelVideos[c.shortname]
-        videos.forEach(function(vid) {
-            if(vid.channelId == c.id) {
+        videos.forEach(function (vid) {
+            if (vid.channelId == c.id) {
                 a.push(vid);
             }
         });

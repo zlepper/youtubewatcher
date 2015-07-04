@@ -4,10 +4,30 @@
     "$scope", "$stateParams", "$http", function($scope, $stateParams, $http) {
       console.log("Channel controller loaded");
       console.log($stateParams);
-      return $http.get("/data/channelstream/" + $stateParams.shortname).success(function(data) {
-        console.log(data);
-        return $scope.videos = data;
-      });
+      $scope.outOfData = false;
+      return $scope.loadMore = function() {
+        if ($scope.outOfData) {
+          return;
+        }
+        console.log("Loading More");
+        $scope.outOfData = true;
+        if ($scope.videos) {
+          return $http.get("/data/channelstream/" + $stateParams.shortname + "/" + $scope.videos.length).success(function(data) {
+            console.log(data);
+            $scope.videos = $scope.videos.concat(data);
+            $scope.outOfData = false;
+            return console.log($scope.videos.length);
+          }).error(function() {
+            return $scope.outOfData = true;
+          });
+        } else {
+          return $http.get("/data/channelstream/" + $stateParams.shortname + "/0").success(function(data) {
+            console.log(data);
+            $scope.videos = data;
+            return $scope.outOfData = false;
+          });
+        }
+      };
     }
   ]);
 
