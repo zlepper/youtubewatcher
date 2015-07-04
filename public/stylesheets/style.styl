@@ -2,8 +2,6 @@ body
   font-family Roboto, arial, sans-serif
 
 ul.channel-grid
-  padding 0
-  list-style none
   display: flex
   flex-wrap wrap
   justify-content space-around
@@ -14,12 +12,16 @@ ul.channel-grid
     margin-bottom 1em
     width 185px
     height auto
+    &.ng-enter
+      animation bounceInLeft 1s
+      &-stagger
+        animation-delay 0.07s
 
     .picture
       span
         right 0.25em
         top -1.5em
-        background-color black
+        background-color rgba(0,0,0,0.5)
         color white
         position relative
         float right
@@ -27,20 +29,55 @@ ul.channel-grid
 
     .content-caption
       h3
-        margin-top 0
+        margin-top 0.1em;
         margin-bottom 0
         margin-left: 0.2em
-        font-size 1.2em
+        font-size 1em
         font-weight bold
 
       .meta
-        font-size: 0.8em
-        li:nth(1)
-          text-align: right
+        font-size 0.8em
+        margin-left 0.3em
 
     img
       height: auto
       width: 100%
-  ul
-    list-style none
-    padding 0
+
+ul
+  list-style none
+  padding 0
+
+ul.channel-list
+  li.channel-content-item
+    display: block
+    padding 1em
+    height auto
+    width 100%
+    border-bottom 2px solid gray
+    &.ng-enter
+      animation flipInX 1s
+      &-stagger
+        animation-delay 0.07s
+  figure
+    float left
+    margin-right 2em
+    img
+      width auto
+      height 180px
+    figcaption
+      text-align right
+      top -1.5em
+      right 0.2em
+      position relative
+      height 0
+      span
+        font-weight bold
+        color white
+        background-color rgba(0,0,0,0.5)
+  .content-caption
+    h3
+      margin: 0
+      margin-bottom 0.2em
+  .meta
+    span
+      display block

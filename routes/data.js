@@ -7,7 +7,7 @@ router.get("/mainstream", function(req, res, next) {
 });
 
 router.get("/channelstream/:channel", function(req, res, next) {
-
+    youtube.getChannelContent(req.params.channel, res);
 });
 
 router.get("/playlists", function(req, res, next) {

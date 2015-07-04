@@ -6,6 +6,9 @@
       $scope.videos;
       return $http.get("/data/mainstream").success(function(data) {
         console.log(data);
+        data.forEach(function(v) {
+          return v.publishedAt = new Date(v.publishedAt);
+        });
         return $scope.videos = data;
       }).error(function(data, status, headers, config) {
         return console.log(data);

@@ -1,1 +1,10 @@
-| Someething something something vaygrim is awesome yada yada yada
+ul.channel-list
+  li(ng-repeat="video in videos track by $index").channel-content-item.clearfix
+    figure
+      img(ng-src="{{video.image}}")
+      figcaption: span {{video.duration}}
+    .content-caption
+      a: h3 {{video.title}}
+      .meta
+        span.published Published at {{video.publishedAt.valueOf() | date:'shortDate' }}
+        span.description {{video.description.slice(0,300)}}...

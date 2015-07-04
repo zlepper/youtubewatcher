@@ -5,6 +5,9 @@ angular.module("youtubewatcher").controller("frontpageController", ["$scope", "$
   $http.get("/data/mainstream")
     .success((data) ->
       console.log data
+      data.forEach((v) ->
+        v.publishedAt = new Date(v.publishedAt);
+      )
       $scope.videos = data
     )
     .error( (data, status, headers, config) ->
