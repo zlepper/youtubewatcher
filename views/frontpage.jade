@@ -1,0 +1,12 @@
+ul.channel-grid
+  //- for(var x = 0; x < 50; x++)
+  li(ng-repeat="video in videos track by $index").channel-content-item
+    .picture
+      img(ng-src="{{video.image}}")
+      span {{video.duration}}
+      .content-caption
+        a
+          h3 {{video.title}}
+        .meta
+          ul
+            li {{video.publishedAt}}

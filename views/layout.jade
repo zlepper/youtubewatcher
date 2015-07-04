@@ -1,0 +1,53 @@
+doctype html
+html
+  head
+    base(href="/")
+    title Vaygrims place
+    script(src="/jquery/dist/jquery.js")
+
+    // Bootstrap stuff
+    link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap.css")
+    link(rel="stylesheet", href="/bootstrap/dist/css/bootstrap-theme.css")
+    script(src="/bootstrap/dist/js/bootstrap.js")
+
+    // Load angularjs stuff
+    script(src='/angular/angular.js')
+    script(src='/angular-animate/angular-animate.js')
+    script(src='/angular-ui-router/release/angular-ui-router.js')
+
+    link(rel="stylesheet", href="/stylesheets/animate.css")
+
+    // Load my own stuff
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/scripts/script.js')
+    // Load all the controllers
+    script(src="/scripts/controllers/main.js")
+    script(src="/scripts/controllers/frontpage.js")
+    script(src="/scripts/controllers/channel.js")
+    script(src="/scripts/controllers/playlists.js")
+
+  body(ng-app="youtubewatcher", ng-controller="MainCtrl")
+    nav.navbar.navbar-default
+      .container
+        .navbar-header
+          button(type='button', data-toggle='collapse', data-target='navbar-collapse').navbar-toggle.collapsed
+            span.sr-only Toggle navigation
+            - for(var x = 0; x < 3; x++)
+            span.icon-bar
+          a(href='#').navbar-brand Vaygrim
+
+        .collapse.navbar-collapse#navbar-collapse
+          ul.nav.navbar-nav
+            li(ui-sref-active="active")
+              a(ui-sref="frontpage") Frontpage
+            - each channel in channels
+              li(ui-sref-active="active")
+                a(ui-sref="channel({shortname: \"" + channel.shortname + "\"})")= channel.shortname
+            li(ui-sref-active="active")
+              a(ui-sref="playlists") Playlists
+            li(ui-sref-active="active")
+              a(ui-sref="about") About
+
+
+
+    block content

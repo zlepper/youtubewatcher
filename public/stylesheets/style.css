@@ -1,0 +1,48 @@
+body {
+  font-family: Roboto, arial, sans-serif;
+}
+ul.channel-grid {
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
+  flex-direction: row;
+}
+ul.channel-grid li.channel-content-item {
+  margin-right: 1em;
+  margin-bottom: 1em;
+  width: 185px;
+  height: auto;
+}
+ul.channel-grid li.channel-content-item .picture span {
+  right: 0.25em;
+  top: -1.5em;
+  background-color: #000;
+  color: #fff;
+  position: relative;
+  float: right;
+  font-weight: bold;
+}
+ul.channel-grid li.channel-content-item .content-caption h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 0.2em;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+ul.channel-grid li.channel-content-item .content-caption .meta {
+  font-size: 0.8em;
+}
+ul.channel-grid li.channel-content-item .content-caption .meta li:nth(1) {
+  text-align: right;
+}
+ul.channel-grid li.channel-content-item img {
+  height: auto;
+  width: 100%;
+}
+ul.channel-grid ul {
+  list-style: none;
+  padding: 0;
+}

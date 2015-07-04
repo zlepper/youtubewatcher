@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "playlists.js",
+  "sourceRoot": "",
+  "sources": [
+    "playlists.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,EAAA,OAAO,CAAC,MAAR,CAAe,gBAAf,CAAgC,CAAC,UAAjC,CAA4C,qBAA5C,EAAmE;IAAC,QAAD,EAAW,SAAC,MAAD,GAAA;aAC5E,OAAO,CAAC,GAAR,CAAY,4BAAZ,EAD4E;IAAA,CAAX;GAAnE,CAAA,CAAA;AAAA"
+}

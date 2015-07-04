@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "channel.js",
+  "sourceRoot": "",
+  "sources": [
+    "channel.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,EAAA,OAAO,CAAC,MAAR,CAAe,gBAAf,CAAgC,CAAC,UAAjC,CAA4C,mBAA5C,EAAiE;IAAC,QAAD,EAAW,cAAX,EAA2B,SAAC,MAAD,EAAS,YAAT,GAAA;AAC1F,MAAA,OAAO,CAAC,GAAR,CAAY,2BAAZ,CAAA,CAAA;aACA,OAAO,CAAC,GAAR,CAAY,YAAZ,EAF0F;IAAA,CAA3B;GAAjE,CAAA,CAAA;AAAA"
+}
