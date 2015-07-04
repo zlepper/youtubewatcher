@@ -20,6 +20,9 @@ ul.channel-grid li.channel-content-item.ng-enter {
 ul.channel-grid li.channel-content-item.ng-enter-stagger {
   animation-delay: 0.07s;
 }
+ul.channel-grid li.channel-content-item.ng-leave {
+  animation: bounceOutRight 1s;
+}
 ul.channel-grid li.channel-content-item .picture span {
   right: 0.25em;
   top: -1.5em;
@@ -48,6 +51,9 @@ ul {
   list-style: none;
   padding: 0;
 }
+.pink {
+  background-color: #ffc0cb;
+}
 ul.channel-list li.channel-content-item {
   display: block;
   padding: 1em;
@@ -60,6 +66,9 @@ ul.channel-list li.channel-content-item.ng-enter {
 }
 ul.channel-list li.channel-content-item.ng-enter-stagger {
   animation-delay: 0.07s;
+}
+ul.channel-list li.channel-content-item.ng-leave {
+  animation: flipOutX 1s;
 }
 ul.channel-list figure {
   float: left;

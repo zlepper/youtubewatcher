@@ -3,8 +3,8 @@ angular.module("youtubewatcher", ["ui.router", "ngAnimate", "infinite-scroll"]).
     $locationProvider.html5Mode(true)
     $urlRouterProvider.otherwise("frontpage")
     $stateProvider.state("frontpage",
-      url: "/frontpage",
-      templateUrl: "/partials/frontpage",
+      url: "/frontpage"
+      templateUrl: "/partials/frontpage"
       controller: "frontpageController"
     )
     .state("channel",

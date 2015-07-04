@@ -1,10 +1,15 @@
-ul(infinite-scroll='loadMore()', infinite-scroll-distance="1", infinite-scroll-disabled="outOfData").channel-list
-  li(ng-repeat="video in videos track by $index").channel-content-item.clearfix
-    figure
-      img(ng-src="{{video.image}}")
-      figcaption: span {{video.duration}}
+ul(infinite-scroll='loadMore()', infinite-scroll-distance="1", infinite-scroll-disabled="outOfData",infinite-scroll-listen-for-event="search:changed").channel-list
+  li(ng-repeat="video in videos|filter:$parent.search track by $index").channel-content-item.clearfix
+    a(ng-href="https://www.youtube.com/watch?v={{video.id}}")
+      figure
+        img(ng-src="{{video.image}}")
+        figcaption: span {{video.duration}}
     .content-caption
-      a: h3 {{video.title}}
+      a(ng-href="https://www.youtube.com/watch?v={{video.id}}")
+        h3 {{video.title}}
       .meta
         span.published Published at {{video.publishedAt.valueOf() | date:'shortDate' }}
         span.description {{video.description.slice(0,300)}}...
+
+
+//(ng-class="{pink: ('channel'|isState)}")

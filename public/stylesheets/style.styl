@@ -16,6 +16,9 @@ ul.channel-grid
       animation bounceInLeft 1s
       &-stagger
         animation-delay 0.07s
+    &.ng-leave
+      animation bounceOutRight 1s
+
 
     .picture
       span
@@ -47,6 +50,9 @@ ul
   list-style none
   padding 0
 
+.pink
+  background-color pink
+
 ul.channel-list
   li.channel-content-item
     display: block
@@ -58,6 +64,8 @@ ul.channel-list
       animation flipInX 1s
       &-stagger
         animation-delay 0.07s
+    &.ng-leave
+      animation flipOutX 1s
   figure
     float left
     margin-right 2em

@@ -27,7 +27,7 @@ html
     script(src="/scripts/controllers/channel.js")
     script(src="/scripts/controllers/playlists.js")
 
-  body(ng-app="youtubewatcher", ng-controller="MainCtrl")
+  body(ng-app="youtubewatcher", ng-controller="MainCtrl as main")
     nav.navbar.navbar-default
       .container
         .navbar-header
@@ -48,6 +48,10 @@ html
               a(ui-sref="playlists") Playlists
             li(ui-sref-active="active")
               a(ui-sref="about") About
+          form(role="search").navbar-form.navbar-left
+            .form-group
+              input(type="search", placeholder="Search", ng-model="search", ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }").form-control
+
 
 
 

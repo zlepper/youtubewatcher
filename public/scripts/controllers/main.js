@@ -2,7 +2,10 @@
 (function() {
   angular.module("youtubewatcher").controller("MainCtrl", [
     "$scope", function($scope) {
-      return console.log("Main controller loaded");
+      console.log("Main controller loaded");
+      return $scope.$watch("search", function() {
+        return $scope.$emit("search:changed");
+      }, true);
     }
   ]);
 

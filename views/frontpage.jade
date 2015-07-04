@@ -1,5 +1,5 @@
-ul(infinite-scroll='loadMore()', infinite-scroll-distance="0.3", infinite-scroll-disabled="outOfData").channel-grid
-  li(ng-repeat="video in videos track by $index").channel-content-item
+ul(infinite-scroll='loadMore()', infinite-scroll-distance="0.3", infinite-scroll-disabled="outOfData",infinite-scroll-listen-for-event="search:changed").channel-grid
+  li(ng-repeat="video in videos|filter:$parent.search track by $index").channel-content-item
     .picture(title="{{video.description}}")
       img(ng-src="{{video.image}}")
       span {{video.duration}}
