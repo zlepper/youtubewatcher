@@ -10,14 +10,14 @@ Install nodejs and npm like so:
 
 windows: Download and run the [installer](https://nodejs.org/download/)
 
-ubuntu: `apt-get install nodejs npm`
+ubuntu: `apt-get install nodejs npm`. Make sure to run the command as root
 
 ## Other 
 It is also recommended to install this: https://github.com/Unitech/pm2
 
 This will allow you to keep the application running in the background. 
 
-You can install it by simply running `npm install pm2 -g`
+You can install it by simply running `npm install pm2 -g`. You might need to run this command as root.
 
 # Installing
 To install the program just clone it of git
@@ -27,7 +27,7 @@ Then navigate to the directory that was just created `cd youtubewatcher`
 
 Then run `npm install`
 
-# Run the application
+# Running the application
 If you haven't installed pm2 you can run the application by doing `node bin/www` on windows or `nodejs bin/www` on ubuntu.
 
 If you have installed pm2 you can run the application by doing `pm2 start bin/www`.
