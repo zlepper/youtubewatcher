@@ -17,7 +17,7 @@ It is also recommended to install this: https://github.com/Unitech/pm2
 
 This will allow you to keep the application running in the background. 
 
-You can install it by simply running `npm install pm2 -g`. You might need to run this command as root.
+You can install it by simply running `npm install pm2 -g`. Has to be run as root.
 
 # Installing
 To install the program just clone it of git
