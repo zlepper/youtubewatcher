@@ -2,3 +2,4 @@
 node_modules/
 config/channelcache.json
 config/videoscache.json
+config/playlistscache.json
