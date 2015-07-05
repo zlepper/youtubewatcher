@@ -332,6 +332,9 @@ function getPlaylists(channel, nextPageToken) {
 }
 
 function recache() {
+    videos = [];
+    channelVideos = {};
+    playlists = [];
     var channels = loader.readChannelFiles();
     channels.forEach(function (channel) {
         setTimeout(function () {

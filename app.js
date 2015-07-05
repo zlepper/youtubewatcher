@@ -7,6 +7,9 @@ var bodyParser = require('body-parser');
 var youtube = require("./bin/youtube");
 var loader = require("./bin/fileloader");
 youtube.recache();
+setInterval(function() {
+    youtube.recache();
+}, 1000*60*60);
 var routes = require('./routes/partials');
 var dataRoutes = require("./routes/data");
 
