@@ -332,7 +332,7 @@ function getPlaylists(channel, nextPageToken) {
 }
 
 function recache() {
-    console.log("Recaching data: " + (new Date().toDateString()));
+    console.log("Recaching data: " + (new Date().toLocaleTimeString()));
     videos = [];
     channelVideos = {};
     playlists = [];
