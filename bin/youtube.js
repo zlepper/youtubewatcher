@@ -1,6 +1,5 @@
 var google = require("googleapis");
 var youtube = google.youtube("v3");
-var https = require("https");
 var API_KEY = "AIzaSyDnfn0wl-PHl91UlLolUsKslfyO4StbQ9Y";
 var loader = require("./fileloader");
 var fs = require("fs");
@@ -13,13 +12,13 @@ var channelCacheFile = path.resolve(__dirname, "..", "config", "channelcache.jso
 var playlistsCacheFile = path.resolve(__dirname, "..", "config", "playlistscache.json");
 
 function clone(obj) {
-    if(obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
+    if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
         return obj;
 
     var temp = obj.constructor(); // changed
 
-    for(var key in obj) {
-        if(Object.prototype.hasOwnProperty.call(obj, key)) {
+    for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
             obj['isActiveClone'] = null;
             temp[key] = clone(obj[key]);
             delete obj['isActiveClone'];
@@ -72,8 +71,8 @@ function getAllContent(res, start, second) {
 exports.getAllContent = getAllContent;
 
 function getSpecificPlaylist(list) {
-    for(var i = 0; i < playlists.length; i++) {
-        if(playlists[i].id == list) {
+    for (var i = 0; i < playlists.length; i++) {
+        if (playlists[i].id == list) {
             return playlists[i].videos;
         }
     }
@@ -81,9 +80,9 @@ function getSpecificPlaylist(list) {
 
 function getShortPlaylists() {
     var p = [];
-    playlists.forEach(function(playlist) {
+    playlists.forEach(function (playlist) {
         var p1 = clone(playlist);
-        p1.videos = p1.videos.reverse().slice(0,5);
+        p1.videos = p1.videos.reverse().slice(0, 5);
         p.push(p1);
     });
     return p;
@@ -160,7 +159,7 @@ function saveCache() {
         if (!channelVideos[c.shortname]) {
             channelVideos[c.shortname] = [];
         }
-        var a = channelVideos[c.shortname]
+        var a = channelVideos[c.shortname];
         videos.forEach(function (vid) {
             if (vid.channelId == c.id) {
                 a.push(vid);
@@ -210,7 +209,18 @@ function getVideoDetails(videoArray) {
                 }
             });
         });
-        videos = videos.concat(videoArray);
+        for (var i = 0; i < videoArray.length; i++) {
+            var v = videoArray[i];
+            var unique = true;
+            for (var j = 0; j < videos.length; j++) {
+                if (v.id == videos[j].length) {
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique)
+                videos.push(v);
+        }
         saveCache();
     });
 }
@@ -242,7 +252,15 @@ function getVideosFromSearch(channel, pageToken) {
                 id: item.id.videoId,
                 channelId: channel.id
             };
-            videoArray.push(video);
+            var unique = true;
+            for (var j = 0; j < videoArray.length; j++) {
+                if (videoArray[j].id == video.id) {
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique)
+                videoArray.push(video);
         });
         setTimeout(function () {
             getVideoDetails(videoArray);
@@ -277,7 +295,16 @@ function getVideosInPlaylist(playlist, nextPageToken) {
                     publishedAt: new Date(snippet.publishedAt),
                     image: snippet.thumbnails.medium.url
                 };
-                playlist.videos.push(video);
+                var unique = true;
+                for (var j = 0; j < playlist.videos.length; j++) {
+                    var v = playlist.videos[j];
+                    if (v.id == video.id) {
+                        unique = false;
+                        break;
+                    }
+                }
+                if (unique)
+                    playlist.videos.push(video);
             }
         });
         if (response.nextPageToken) {
