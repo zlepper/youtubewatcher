@@ -12,12 +12,6 @@ windows: Download and run the [installer](https://nodejs.org/download/)
 
 ubuntu: `apt-get install nodejs npm`. Make sure to run the command as root
 
-## Other 
-It is also recommended to install this: https://github.com/Unitech/pm2
-
-This will allow you to keep the application running in the background. 
-
-You can install it by simply running `npm install pm2 -g`. You might need to run this command as root.
 
 # Installing
 To install the program just clone it of git
