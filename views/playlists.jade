@@ -1,5 +1,5 @@
 ul.playlist-list
-  li(ng-repeat="playlist in playlists|filter:search track by $index").playlist.clearfix
+  li(ng-repeat="playlist in playlists|filter:search as results track by $index").playlist.clearfix
     h3(ng-click="changeState(playlist.id)", ng-class="{clickable: playlist.videos.length > 4}") {{playlist.title}}
       small {{playlist.description}}
         span(ng-if="playlist.videos.length > 4") (click to {{playlist.videos.length == 5 ? "expand" : "collapse"}})
@@ -16,5 +16,6 @@ ul.playlist-list
               .meta
                 ul
                   li Published at {{video.publishedAt.valueOf() | date:'shortDate' }}
+  h2(ng-if="results.length == 0") No matching playlists found
 
 div(ui-view="", ng-class="{hidden: playerHidden}").player

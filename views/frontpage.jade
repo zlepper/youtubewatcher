@@ -1,5 +1,5 @@
 ul(infinite-scroll='loadMore()', infinite-scroll-distance="0.3", infinite-scroll-disabled="outOfData",infinite-scroll-listen-for-event="search:changed").channel-grid
-  li(ng-repeat="vid in videos|filter:$parent.search track by $index").channel-content-item
+  li(ng-repeat="vid in videos|filter:$parent.search as results track by $index").channel-content-item
     .picture(title="{{vid.description}}")
       a(ui-sref=".video({id: vid.id})")
         img(ng-src="{{vid.image}}")
@@ -10,5 +10,6 @@ ul(infinite-scroll='loadMore()', infinite-scroll-distance="0.3", infinite-scroll
         .meta
           ul
             li Published at {{vid.publishedAt.valueOf() | date:'shortDate' }}
+  h2(ng-if="results.length == 0") No matching videos found
 
 div(ui-view="", ng-class="{hidden: playerHidden}").player
