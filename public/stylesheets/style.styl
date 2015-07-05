@@ -112,9 +112,27 @@ small
   right 0
   top 2em
   margin auto
-  width 50%
-  height 80%
   iframe
     width 100%
     height 100%
     border none
+
+@media screen and (min-width: 768px)
+  .player
+    width 640px
+    height 360px
+
+@media screen and (min-width: 992px)
+  .player
+    width 832px
+    height 468px
+
+@media screen and (min-width: 1200px)
+  .player
+    width 1150px
+    height 647px
+
+@media screen and (max-width: 768px)
+  .player
+    width 100%
+    height 50%

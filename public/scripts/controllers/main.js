@@ -3,6 +3,7 @@
   angular.module("youtubewatcher").controller("MainCtrl", [
     "$scope", "$state", function($scope, $state) {
       $scope.state = $state;
+      $scope.search = {};
       $scope.$watch("search", function() {
         return $scope.$emit("search:changed");
       }, true);

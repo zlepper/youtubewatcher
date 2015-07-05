@@ -1,7 +1,5 @@
 angular.module("youtubewatcher").controller("playlistsController", ["$scope", "$http", "$state", ($scope, $http, $state) ->
   console.log "Playlist controller loaded"
-  $scope.search =
-    title: ""
 
   $http.get("/data/playlists")
     .success((data) ->
@@ -21,10 +19,6 @@ angular.module("youtubewatcher").controller("playlistsController", ["$scope", "$
         )
     else
       play.videos = play.videos.slice(0,5)
-
-  $scope.$parent.$watch("search", (newValue, oldValue) ->
-    $scope.search.title = newValue
-  )
 
 
   $scope.playerHidden = true
