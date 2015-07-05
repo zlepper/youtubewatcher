@@ -1,1 +1,20 @@
-| Someething something something vaygrim is awesome yada yada yada
+ul.playlist-list
+  li(ng-repeat="playlist in playlists|filter:search track by $index").playlist.clearfix
+    h3(ng-click="changeState(playlist.id)", ng-class="{clickable: playlist.videos.length > 4}") {{playlist.title}}
+      small {{playlist.description}}
+        span(ng-if="playlist.videos.length > 4") (click to {{playlist.videos.length == 5 ? "expand" : "collapse"}})
+    .videos
+      ul.channel-grid
+        li(ng-repeat="video in playlist.videos track by $index").channel-content-item
+          .picture(title="{{video.description}}")
+            a(ui-sref=".video({id: video.id})")
+              img(ng-src="{{video.image}}")
+              span {{video.duration}}
+            .content-caption
+              a(ui-sref=".video({id: video.id})")
+                h3 {{video.title}}
+              .meta
+                ul
+                  li Published at {{video.publishedAt.valueOf() | date:'shortDate' }}
+
+div(ui-view="", ng-class="{hidden: playerHidden}").player

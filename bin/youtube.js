@@ -7,12 +7,31 @@ var fs = require("fs");
 var path = require("path");
 var videos = [];
 var channelVideos = {};
+var playlists = [];
 var cacheFile = path.resolve(__dirname, "..", "config", "videoscache.json");
 var channelCacheFile = path.resolve(__dirname, "..", "config", "channelcache.json");
+var playlistsCacheFile = path.resolve(__dirname, "..", "config", "playlistscache.json");
+
+function clone(obj) {
+    if(obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
+        return obj;
+
+    var temp = obj.constructor(); // changed
+
+    for(var key in obj) {
+        if(Object.prototype.hasOwnProperty.call(obj, key)) {
+            obj['isActiveClone'] = null;
+            temp[key] = clone(obj[key]);
+            delete obj['isActiveClone'];
+        }
+    }
+
+    return temp;
+}
 
 function getChannelContent(channelShortname, res, second, start) {
     start = Number(start);
-    if (channelVideos[channelShortname]) {
+    if (channelVideos[channelShortname].length) {
         if (channelVideos[channelShortname].length <= start) {
             res.status(404).send("Not found");
         } else {
@@ -33,8 +52,8 @@ exports.getChannelContent = getChannelContent;
 
 function getAllContent(res, start, second) {
     start = Number(start);
-    if (videos) {
-        if(videos.length <= start) {
+    if (videos.length) {
+        if (videos.length <= start) {
             res.status(404).send("Not found");
         } else {
             var end = videos.length > start + 50 ? start + 50 : videos.length;
@@ -42,7 +61,7 @@ function getAllContent(res, start, second) {
             res.send(JSON.stringify(a));
         }
     } else {
-        if(second) return;
+        if (second) return;
         fs.readFile(cacheFile, {encoding: "utf8"}, function (err, data) {
             videos = JSON.parse(data);
             getAllContent(res, start, true);
@@ -51,6 +70,44 @@ function getAllContent(res, start, second) {
 }
 
 exports.getAllContent = getAllContent;
+
+function getSpecificPlaylist(list) {
+    for(var i = 0; i < playlists.length; i++) {
+        if(playlists[i].id == list) {
+            return playlists[i].videos;
+        }
+    }
+}
+
+function getShortPlaylists() {
+    var p = [];
+    playlists.forEach(function(playlist) {
+        var p1 = clone(playlist);
+        p1.videos = p1.videos.reverse().slice(0,5);
+        p.push(p1);
+    });
+    return p;
+}
+
+function getPlaylistsContent(res, list, second) {
+    if (playlists.length) {
+        if (!list) {
+            var p = getShortPlaylists();
+            res.send(JSON.stringify(p));
+        } else {
+            var v = getSpecificPlaylist(list);
+            res.send(JSON.stringify(v));
+        }
+    } else {
+        if (second) return;
+        fs.readFile(playlistsCacheFile, {encoding: "utf8"}, function (err, data) {
+            playlists = JSON.parse(data);
+            getPlaylistsContent(res, null, true);
+        })
+    }
+}
+
+exports.getPlaylistsContent = getPlaylistsContent;
 
 // Youtube duration converter hax
 var iso8601DurationRegex = /(-)?P(?:([\.,\d]+)Y)?(?:([\.,\d]+)M)?(?:([\.,\d]+)W)?(?:([\.,\d]+)D)?T(?:([\.,\d]+)H)?(?:([\.,\d]+)M)?(?:([\.,\d]+)S)?/;
@@ -112,6 +169,21 @@ function saveCache() {
     });
     j = JSON.stringify(channelVideos);
     fs.writeFile(channelCacheFile, j);
+
+    playlists.forEach(function (playlist) {
+        playlist.videos.forEach(function (vid) {
+            if (!vid.duration)
+                for (var i = 0; i < videos.length; i++) {
+                    if (videos[i].id == vid.id) {
+                        vid.duration = videos[i].duration;
+                        break;
+                    }
+                }
+        });
+    });
+    j = JSON.stringify(playlists);
+    fs.writeFile(playlistsCacheFile, j);
+
 }
 
 function getVideoDetails(videoArray) {
@@ -149,7 +221,7 @@ function getVideosFromSearch(channel, pageToken) {
         channelId: channel.id,
         order: "date",
         part: "snippet",
-        maxResults: "50",
+        maxResults: 50,
         type: "video"
     };
     if (pageToken) {
@@ -159,7 +231,6 @@ function getVideosFromSearch(channel, pageToken) {
         if (err) {
             throw err
         }
-        //console.log(JSON.stringify(response));
         var items = response.items;
         var videoArray = [];
         items.forEach(function (item) {
@@ -182,11 +253,93 @@ function getVideosFromSearch(channel, pageToken) {
     });
 }
 
+function getVideosInPlaylist(playlist, nextPageToken) {
+    var request = {
+        auth: API_KEY,
+        part: "snippet",
+        playlistId: playlist.id,
+        maxResults: 50
+    };
+    if (nextPageToken) {
+        request.pageToken = nextPageToken;
+    }
+    youtube.playlistItems.list(request, function (err, response) {
+        if (err) throw err;
+        var items = response.items;
+        if (!playlist.videos) playlist.videos = [];
+        items.forEach(function (item) {
+            var snippet = item.snippet;
+            if (snippet.title.toLowerCase() != "private video") {
+                var video = {
+                    id: snippet.resourceId.videoId,
+                    description: snippet.description,
+                    title: snippet.title,
+                    publishedAt: new Date(snippet.publishedAt),
+                    image: snippet.thumbnails.medium.url
+                };
+                playlist.videos.push(video);
+            }
+        });
+        if (response.nextPageToken) {
+            getVideosInPlaylist(playlist, response.nextPageToken)
+        } else {
+            if (!playlists) playlists = [];
+            playlists.push(playlist);
+            saveCache();
+        }
+    });
+}
+
+function getVideosInPlaylists(playlistArray) {
+    playlistArray.forEach(function (playlist) {
+        getVideosInPlaylist(playlist);
+    });
+}
+
+function getPlaylists(channel, nextPageToken) {
+    var requestObject = {
+        auth: API_KEY,
+        channelId: channel.id,
+        part: "snippet",
+        maxResults: 50
+    };
+    if (nextPageToken) {
+        requestObject.pageToken = nextPageToken;
+    }
+    youtube.playlists.list(requestObject, function (err, response) {
+        if (err) throw err;
+        var items = response.items;
+        var playlistsArray = [];
+        items.forEach(function (item) {
+            var snippet = item.snippet;
+            var playlist = {
+                id: item.id,
+                publishedAt: new Date(snippet.publishedAt),
+                title: snippet.title,
+                description: snippet.description,
+                image: snippet.thumbnails.high.url ? snippet.thumbnails.high.url : snippet.thumbnails.medium.url
+            };
+            playlistsArray.push(playlist);
+        });
+        setTimeout(function () {
+            getVideosInPlaylists(playlistsArray);
+        });
+        if (response.nextPageToken) {
+            getPlaylists(channel, response.nextPageToken);
+        }
+
+    })
+}
+
 function recache() {
     var channels = loader.readChannelFiles();
     channels.forEach(function (channel) {
-
-        getVideosFromSearch(channel);
+        setTimeout(function () {
+            getVideosFromSearch(channel);
+        }, 0);
+        setTimeout(function () {
+            getPlaylists(channel)
+        }, 0);
     });
 }
 

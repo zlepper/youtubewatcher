@@ -1,6 +1,6 @@
 
 
-angular.module("youtubewatcher").controller("channelController", ["$scope", "$stateParams", "$http", ($scope, $stateParams, $http) ->
+angular.module("youtubewatcher").controller("channelController", ["$scope", "$stateParams", "$http", "$state", ($scope, $stateParams, $http, $state) ->
   console.log "Channel controller loaded"
   console.log $stateParams
   $scope.outOfData = false
@@ -28,4 +28,10 @@ angular.module("youtubewatcher").controller("channelController", ["$scope", "$st
           $scope.videos = data
           $scope.outOfData = false
         )
+
+
+  $scope.playerHidden = true
+  $scope.$on("$stateChangeSuccess", ->
+    $scope.playerHidden = !$state.is("channel.video")
+  )
 ])

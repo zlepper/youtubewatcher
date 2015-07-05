@@ -17,5 +17,9 @@ router.get('/partials/channel', function (req, res, next) {
     res.render('channel');
 });
 
+router.get("/partials/player", function(req, res, next) {
+    res.render("player");
+});
+
 
 module.exports = router;

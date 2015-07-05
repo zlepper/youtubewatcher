@@ -97,3 +97,35 @@ ul.channel-list .content-caption h3 {
 ul.channel-list .meta span {
   display: block;
 }
+.playlist-list .playlist {
+  border-bottom: 2px solid #808080;
+}
+.playlist-list .playlist.ng-enter {
+  animation: flipInX 1s;
+}
+.playlist-list .playlist.ng-enter-stagger {
+  animation-delay: 0.07s;
+}
+.playlist-list .playlist.ng-leave {
+  animation: flipOutX 1s;
+}
+small {
+  padding-left: 0.5em;
+}
+.clickable {
+  cursor: pointer;
+}
+.player {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 2em;
+  margin: auto;
+  width: 50%;
+  height: 80%;
+}
+.player iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}

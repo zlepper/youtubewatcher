@@ -26,6 +26,7 @@ html
     script(src="/scripts/controllers/frontpage.js")
     script(src="/scripts/controllers/channel.js")
     script(src="/scripts/controllers/playlists.js")
+    script(src="/scripts/controllers/player.js")
 
   body(ng-app="youtubewatcher", ng-controller="MainCtrl as main")
     nav.navbar.navbar-default
@@ -46,13 +47,11 @@ html
                 a(ui-sref="channel({shortname: \"" + channel.shortname + "\"})")= channel.shortname
             li(ui-sref-active="active")
               a(ui-sref="playlists") Playlists
-            li(ui-sref-active="active")
-              a(ui-sref="about") About
-          form(role="search").navbar-form.navbar-left
+          form(role="search").navbar-form.navbar-right
             .form-group
               input(type="search", placeholder="Search", ng-model="search", ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }").form-control
 
 
 
-
-    block content
+    div(ng-click="resetNavigation()")
+      block content

@@ -1,4 +1,4 @@
-angular.module("youtubewatcher").controller("frontpageController", ["$scope", "$http", ($scope, $http) ->
+angular.module("youtubewatcher").controller("frontpageController", ["$scope", "$http", "$state", ($scope, $http, $state) ->
   console.log "Frontpage controller loaded"
   $scope.videos
   $scope.outOfData = false
@@ -26,4 +26,10 @@ angular.module("youtubewatcher").controller("frontpageController", ["$scope", "$
         $scope.videos = data
         $scope.outOfData = false
       )
+
+  $scope.playerHidden = true
+  $scope.$on("$stateChangeSuccess", ->
+    $scope.playerHidden = !$state.is("frontpage.video")
+  )
+
 ])

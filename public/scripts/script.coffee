@@ -17,10 +17,20 @@ angular.module("youtubewatcher", ["ui.router", "ngAnimate", "infinite-scroll"]).
       templateUrl: "/partials/playlists"
       controller: "playlistsController"
     )
-    .state("about",
-      url: "/about"
-      templateUrl: "/partials/about"
-      #controller: "/aboutController"
+    .state("frontpage.video",
+      url: "/:id"
+      templateUrl: "/partials/player"
+      controller: "playerCtrl"
+    )
+    .state("channel.video",
+      url: "/:id"
+      templateUrl: "/partials/player"
+      controller: "playerCtrl"
+    )
+    .state("playlists.video",
+      url: "/:id"
+      templateUrl: "/partials/player"
+      controller: "playerCtrl"
     )
 ])
 

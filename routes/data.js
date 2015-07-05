@@ -15,11 +15,11 @@ router.get("/channelstream/:channel/:start", function(req, res, next) {
 });
 
 router.get("/playlists", function(req, res, next) {
-
+    youtube.getPlaylistsContent(res);
 });
 
 router.get("/playlists/:list", function(req, res, next) {
-
+    youtube.getPlaylistsContent(res, req.params.list);
 });
 
 module.exports = router;
