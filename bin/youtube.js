@@ -11,6 +11,12 @@ var cacheFile = path.resolve(__dirname, "..", "config", "videoscache.json");
 var channelCacheFile = path.resolve(__dirname, "..", "config", "channelcache.json");
 var playlistsCacheFile = path.resolve(__dirname, "..", "config", "playlistscache.json");
 
+function uniq(a) {
+    return a.filter(function (item, pos, ary) {
+        return !pos || item != ary[pos - 1];
+    })
+}
+
 function clone(obj) {
     if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
         return obj;
@@ -150,6 +156,7 @@ function saveCache() {
     videos.sort(function (a, b) {
         return (a.publishedAt - b.publishedAt) * -1;
     });
+    videos = uniq(videos);
     var j = JSON.stringify(videos);
     fs.writeFile(cacheFile, j);
 
