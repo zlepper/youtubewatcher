@@ -5,6 +5,12 @@
       console.log("Frontpage controller loaded");
       $scope.videos;
       $scope.outOfData = false;
+          $scope.results;
+          $scope.$watch("results", function () {
+              if ($scope.results.length < 50) {
+                  return $scope.loadMore();
+              }
+          });
       $scope.loadMore = function() {
         if ($scope.outOfData) {
           return;

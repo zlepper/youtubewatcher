@@ -4,7 +4,12 @@ angular.module("youtubewatcher").controller("channelController", ["$scope", "$st
   console.log "Channel controller loaded"
   console.log $stateParams
   $scope.outOfData = false
+  $scope.results;
 
+  $scope.$watch("results", ->
+    if($scope.results.length < 15)
+      $scope.loadMore();
+  )
   $scope.loadMore = ->
     if($scope.outOfData)
       return

@@ -157,7 +157,6 @@ small {
     height: 50%;
   }
 }
-
 @media screen and (max-height: 768px) {
     .player {
         height: 75%;

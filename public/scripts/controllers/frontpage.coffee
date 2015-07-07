@@ -2,6 +2,12 @@ angular.module("youtubewatcher").controller("frontpageController", ["$scope", "$
   console.log "Frontpage controller loaded"
   $scope.videos
   $scope.outOfData = false
+  $scope.results
+
+  $scope.$watch("results", ->
+    if($scope.results.length < 50)
+      $scope.loadMore();
+  )
 
   $scope.loadMore = ->
     if($scope.outOfData)

@@ -5,6 +5,12 @@
       console.log("Channel controller loaded");
       console.log($stateParams);
       $scope.outOfData = false;
+          $scope.results;
+          $scope.$watch("results", function () {
+              if ($scope.results.length < 15) {
+                  return $scope.loadMore();
+              }
+          });
       $scope.loadMore = function() {
         if ($scope.outOfData) {
           return;
