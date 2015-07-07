@@ -13,7 +13,7 @@ var playlistsCacheFile = path.resolve(__dirname, "..", "config", "playlistscache
 
 function uniq(a) {
     return a.filter(function (item, pos, ary) {
-        return !pos || item != ary[pos - 1];
+        return !pos || item.id != ary[pos - 1].id;
     })
 }
 
