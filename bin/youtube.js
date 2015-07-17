@@ -204,7 +204,7 @@ function getVideoDetails(videoArray) {
         id: ids,
         maxResults: 50
     }, function (err, data) {
-        if (err) throw err;
+        if (err) return;
         var items = data.items;
         items.forEach(function (item) {
 
@@ -246,7 +246,7 @@ function getVideosFromSearch(channel, pageToken) {
     }
     youtube.search.list(requestObject, function (err, response) {
         if (err) {
-            throw err
+            return;
         }
         var items = response.items;
         var videoArray = [];
@@ -289,7 +289,7 @@ function getVideosInPlaylist(playlist, nextPageToken) {
         request.pageToken = nextPageToken;
     }
     youtube.playlistItems.list(request, function (err, response) {
-        if (err) throw err;
+        if (err) return;
         var items = response.items;
         if (!playlist.videos) playlist.videos = [];
         items.forEach(function (item) {
@@ -341,7 +341,7 @@ function getPlaylists(channel, nextPageToken) {
         requestObject.pageToken = nextPageToken;
     }
     youtube.playlists.list(requestObject, function (err, response) {
-        if (err) throw err;
+        if (err) return;
         var items = response.items;
         var playlistsArray = [];
         items.forEach(function (item) {
