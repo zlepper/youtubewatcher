@@ -127,6 +127,22 @@ small {
   height: 100%;
   border: none;
 }
+a,
+button,
+#animation-toggle {
+  outline: 0;
+}
+a:focus,
+button:focus,
+#animation-toggle:focus,
+a:active,
+button:active,
+#animation-toggle:active,
+a:hover,
+button:hover,
+#animation-toggle:hover {
+  outline: 0;
+}
 @media screen and (min-width: 768px) {
   .player {
     width: 640px;
