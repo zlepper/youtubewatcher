@@ -293,25 +293,30 @@ function getVideosInPlaylist(playlist, nextPageToken) {
         var items = response.items;
         if (!playlist.videos) playlist.videos = [];
         items.forEach(function (item) {
-            var snippet = item.snippet;
-            if (snippet.title.toLowerCase() != "private video") {
-                var video = {
-                    id: snippet.resourceId.videoId,
-                    description: snippet.description,
-                    title: snippet.title,
-                    publishedAt: new Date(snippet.publishedAt),
-                    image: snippet.thumbnails.medium.url
-                };
-                var unique = true;
-                for (var j = 0; j < playlist.videos.length; j++) {
-                    var v = playlist.videos[j];
-                    if (v.id == video.id) {
-                        unique = false;
-                        break;
+            try {
+                var snippet = item.snippet;
+                if (snippet.title.toLowerCase() != "private video") {
+                    var video = {
+                        id: snippet.resourceId.videoId,
+                        description: snippet.description,
+                        title: snippet.title,
+                        publishedAt: new Date(snippet.publishedAt),
+                        image: snippet.thumbnails.medium.url
+                    };
+
+                    var unique = true;
+                    for (var j = 0; j < playlist.videos.length; j++) {
+                        var v = playlist.videos[j];
+                        if (v.id == video.id) {
+                            unique = false;
+                            break;
+                        }
                     }
+                    if (unique)
+                        playlist.videos.push(video);
                 }
-                if (unique)
-                    playlist.videos.push(video);
+            } catch (err) {
+                console.log("Had issue with video, skipping it. ");
             }
         });
         if (response.nextPageToken) {
