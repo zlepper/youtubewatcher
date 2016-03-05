@@ -7,7 +7,7 @@ angular.module("youtubewatcher").controller("channelController", ["$scope", "$st
   $scope.results;
 
   $scope.$watch("results", ->
-    if($scope.results.length < 15)
+    if($scope.results && $scope.results.length < 15)
       $scope.loadMore();
   )
   $scope.loadMore = ->
